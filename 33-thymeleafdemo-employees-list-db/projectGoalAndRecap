@@ -1,0 +1,83 @@
+
+###################################################################################################################################################################
+#
+# APP Requirements: Create WEB UI for the Employee Repository using Spring, Spring Boot and Thymeleaf, ORM tool is optional (JPA, Hibernate, Spring Data JPA)
+#
+# User should be able to:
+# 1) Get a list of all employees
+# 2) Add a new employee
+# 3) Update an employee
+# 4) Delete an employee
+#
+#
+####################################################################################################################################################################
+
+
+* Step-by-step what was done in project:
+
+1) Using spring boot and dev-tools we'll start the app from main ThymeleafDemoApplication, it has integrated Tomcat
+
+2) In index.html has been defined to automatically redirect user to employees-list.html
+
+3) JDBC connection to DB has been defined in application.properties file
+
+
+####################################################################################################################################################################
+
+* Since we'll use a Spring Data JPA ORM tool for writing CRUD operations:
+
+1) No need to write our own code for findAll, findById, save, delete, update etc. Spring Data has integrated methods for that, we only need to pass the type and key
+	and our DAO interface needs to extended JpaRepository in order to implement all methods
+	** public interface EmployeeRepository extends JpaRepository<Employee, Integer> ** <T, ID>
+
+2) Only operation written inside DAO is the one where we wanted to order list by last name A-Z,  public List<Employee> findAllByOrderByLastNameAsc();
+	**za vise ovakvih slucajeva gde kompajler cita potpis metode i sam odredjuje metodu: luv2code.com/query-methods
+
+3) No need for @Transactional inside Service methods, JpaRepository alredy knows that all methods inside service are by default @Transactional
+
+
+####################################################################################################################################################################
+
+* Since we are using Thymeleaf, quick recap how Thymeleaf works:
+
+1) It reads html files from src/main/resources/templates or /static, JSP for example looks JSP files inside /WEB-INF
+
+2) Every html file needs to have Thymeleaf integration, in order to use Thymeleaf expressions => <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+3) Thymeleaf expressions:
+	th:each="tempEmployee : ${employees}" => loop through collection -> ${employees}
+	th:text="${tempEmployee.firstName}"   => display first name
+	
+	th:href = "@{/employees/showFormForUpdate(employeeId=${tempEmployee.id})}" => '@' will redirect to root, slicno kao contextPath u JSP-u
+																			   => /employees/showFormForUpdate - referenca na mapping u kontrolleru, EmployeeController/employee/showFormForUpdate
+																			   => employeeId=${tempEmployee.id}) - employeeId je bindovan za value tempEmployee.id i bice bindovan u metodi sa @RequestParam
+	
+	th:action="@{/employees/save}" 	=> usmerava na metodu u kontroleru
+	th:object="${employee}"		=> cita bindovani attribute koji je prosledjen
+	
+	form action="#" => po defaultu uvek stoji, jer cemo zapravo koristiti Thymeleaf expression za form action(th:action)
+
+
+####################################################################################################################################################################
+#	
+#	BootStrap links used in project
+#
+#	<!-- Required meta tags -->
+#	    <meta charset="utf-8">
+#	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+#
+#    <!-- Bootstrap CSS -->
+#    	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+#	
+#
+#
+####################################################################################################################################################################
+
+
+
+
+
+
+
+
+

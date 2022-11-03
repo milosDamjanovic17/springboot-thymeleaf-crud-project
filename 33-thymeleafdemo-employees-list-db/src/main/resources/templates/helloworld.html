@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- Enabling to use thymeleaf expressions -->
+
+<head>
+<meta charset="UTF-8">
+<title>Thymeleaf Demo</title>
+
+<!-- Reference CSS file -->
+	<link rel="stylesheet"
+		  th:href="@{/css/demo.css}"> <!-- '@' znaci da ce se vratiti na root directory, slicno ako contextPath u JSP -->
+</head>
+
+<body>
+
+	<p th:text="'Time on the server is ' +${theDate}" class="style2"/>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
